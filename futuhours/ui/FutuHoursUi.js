@@ -1,11 +1,15 @@
-import createCssNs from 'futuhours/utils/css-ns';
+import { renderFromProps } from 'futuhours/utils/react';
 
-const { React } = createCssNs(__filename);
+export default renderFromProps(
 
-export default React.createClass({
+  __filename,
 
-  render() {
-    return <div className="this">Hola, Mundo!</div>;
-  }
+  {},
 
-});
+  (el, props) => (
+
+    el('div', { className: 'this' }, 'Hola, Mundo!')
+
+  )
+
+);
