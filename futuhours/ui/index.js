@@ -5,10 +5,12 @@
 // @see https://babeljs.io/docs/usage/polyfill/
 import 'babel-polyfill';
 
-// TODO: import FutuHoursUi from 'futuhours/ui/FutuHoursUi';
-
 // Help older mobile browsers with their click-delay-woes
 import fastclick from 'fastclick';
 fastclick(document.body);
 
-console.log('Hello, World!');
+// Import and render the UI root
+import React from 'react'
+import { render } from 'react-dom'
+import FutuHoursUi from 'futuhours/ui/FutuHoursUi';
+render(<FutuHoursUi />, document.getElementById('futuhours-root'));
