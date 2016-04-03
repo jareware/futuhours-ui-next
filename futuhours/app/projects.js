@@ -1,4 +1,5 @@
-import { List, fromJS } from 'immutable';
+import { List } from 'immutable';
+import { fromJS } from 'futuhours/utils/immutable';
 
 export const FETCH_PROJECTS_STARTED = 'FETCH_PROJECTS_STARTED';
 export const FETCH_PROJECTS_SUCCEEDED = 'FETCH_PROJECTS_SUCCEEDED';
