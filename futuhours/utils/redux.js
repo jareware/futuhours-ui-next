@@ -20,7 +20,7 @@ export function createReduxApp(modules = {}, utilities = {}, initialState = new 
   const StateRecordType = defineRecord(mapValues(modules, () => undefined));
   const initialStateRecord = new StateRecordType().merge(initialState);
   // Create store with devToolsExtension patched in (if provided):
-  const store = window.store = createStore(rootReducer, initialStateRecord, compose(
+  const store = createStore(rootReducer, initialStateRecord, compose(
     applyMiddleware(appThunkMiddleware),
     utilities.devToolsExtension ? utilities.devToolsExtension() : f => f
   ));
