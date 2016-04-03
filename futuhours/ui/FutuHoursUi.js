@@ -36,7 +36,11 @@ export default renderFromStore(
       el(Toolbar, { onButtonClick: app.projects.fetchProjects }),
 
       el('ul', null, state.get('projects').map(
-        (item, i) => el('li', { key: i }, item)
+        project => el('li', { key: project.get('id') }, project.get('name'),
+          el('ul', null, project.get('tasks').map(
+            task => el('li', { key: task.get('id') }, task.get('name'))
+          ))
+        )
       )),
 
       !!state.get('operations') && el('p', null, 'Fetching...')

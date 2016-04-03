@@ -1,4 +1,4 @@
-import { List } from 'immutable';
+import { List, fromJS } from 'immutable';
 
 export const FETCH_PROJECTS_STARTED = 'FETCH_PROJECTS_STARTED';
 export const FETCH_PROJECTS_SUCCEEDED = 'FETCH_PROJECTS_SUCCEEDED';
@@ -7,7 +7,13 @@ export const FETCH_PROJECTS_FAILED = 'FETCH_PROJECTS_FAILED';
 export function fetchProjects() {
   return app => {
     app.projects.fetchProjectsStarted();
-    app.apiClient.getAvailableProjects()
+    app.pouchDB.allDocs({
+      include_docs: true,
+      start_key: 'projects/',
+      end_key: 'projects/_',
+    })
+      .then(res => res.rows.map(row => row.doc))
+      .then(fromJS)
       .then(app.projects.fetchProjectsSucceeded)
       .catch(app.projects.fetchProjectsFailed);
   };

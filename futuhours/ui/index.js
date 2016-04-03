@@ -17,9 +17,9 @@ fastclick(document.body);
 // Construct our app instance
 import { createReduxApp } from 'futuhours/utils/redux';
 import modules from 'futuhours/app/';
-import FutuHoursApiClient from 'futuhours/utils/FutuHoursApiClient';
+import PouchDB from 'pouchdb';
 const reduxApp = createReduxApp(modules, {
-  futuHoursApi: FutuHoursApiClient,
+  pouchDB: new PouchDB(process.env.DB_URL),
   devToolsExtension: window.devToolsExtension,
 });
 
