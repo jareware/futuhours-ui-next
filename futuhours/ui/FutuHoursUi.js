@@ -25,9 +25,7 @@ export default renderFromStore(
 
   __filename,
 
-  state => state.filter(
-    (_, key) => key === 'projects' || key === 'operations'
-  ),
+  null, // use the entire state atom
 
   (el, state, app) => (
 
@@ -35,7 +33,7 @@ export default renderFromStore(
 
       el(Toolbar, { onButtonClick: app.projects.fetchProjects }),
 
-      el('ul', null, state.get('projects').map(
+      el('ul', null, state.projects.map(
         project => el('li', { key: project.id }, project.name,
           el('ul', null, project.tasks.map(
             task => el('li', { key: task.id }, task.name)
@@ -43,7 +41,7 @@ export default renderFromStore(
         )
       )),
 
-      !!state.get('operations') && el('p', null, 'Fetching...')
+      !!state.operations && el('p', null, 'Fetching...')
 
     )
 

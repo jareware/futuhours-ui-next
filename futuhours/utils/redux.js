@@ -1,5 +1,5 @@
 import { bindActionCreators, createStore, applyMiddleware, compose } from 'redux';
-import { Map } from 'immutable';
+import { Map, Record as defineRecord } from 'immutable';
 import { combineReducers } from 'redux-immutable';
 import { extend, mapValues, isFunction, pickBy } from 'lodash';
 
@@ -16,8 +16,11 @@ export function createReduxApp(modules = {}, utilities = {}, initialState = new 
       module => module.default
     )
   );
+  // Create an Immutable Record that matches the shape of our top-level state:
+  const StateRecordType = defineRecord(mapValues(modules, () => undefined));
+  const initialStateRecord = new StateRecordType().merge(initialState);
   // Create store with devToolsExtension patched in (if provided):
-  const store = window.store = createStore(rootReducer, initialState, compose(
+  const store = window.store = createStore(rootReducer, initialStateRecord, compose(
     applyMiddleware(appThunkMiddleware),
     utilities.devToolsExtension ? utilities.devToolsExtension() : f => f
   ));
