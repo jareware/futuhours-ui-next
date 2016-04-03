@@ -41,7 +41,7 @@ export default renderFromStore(
         )
       )),
 
-      !!state.operations && el('p', null, 'Fetching...')
+      !!state.operations.isFetching && el('p', null, 'Fetching...')
 
     )
 

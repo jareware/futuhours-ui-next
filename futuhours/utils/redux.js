@@ -1,9 +1,9 @@
 import { bindActionCreators, createStore, applyMiddleware, compose } from 'redux';
-import { Map, Record as defineRecord } from 'immutable';
+import { Record as defineRecord } from 'immutable';
 import { combineReducers } from 'redux-immutable';
 import { extend, mapValues, isFunction, pickBy } from 'lodash';
 
-export function createReduxApp(modules = {}, utilities = {}, initialState = new Map()) {
+export function createReduxApp(modules = {}, utilities = {}, initialState = {}) {
   // This is our "app context" object:
   const reduxApp = {};
   // Create middleware that works like redux-thunk, but allows access to the reduxApp object instead:
@@ -16,11 +16,12 @@ export function createReduxApp(modules = {}, utilities = {}, initialState = new 
       module => module.default
     )
   );
-  // Create an Immutable Record that matches the shape of our top-level state:
+  // Create an Immutable Record that matches the shape of our top-level state, and ask all reducers for their default state:
   const StateRecordType = defineRecord(mapValues(modules, () => undefined));
-  const initialStateRecord = new StateRecordType().merge(initialState);
-  // Create store with devToolsExtension patched in (if provided):
-  const store = createStore(rootReducer, initialStateRecord, compose(
+  const tempStore = createStore(rootReducer, new StateRecordType());
+  const recordedInitialState = tempStore.getState().mergeDeep(initialState);
+  // Create our store, with devToolsExtension patched in (if provided):
+  const store = createStore(rootReducer, recordedInitialState, compose(
     applyMiddleware(appThunkMiddleware),
     utilities.devToolsExtension ? utilities.devToolsExtension() : f => f
   ));
