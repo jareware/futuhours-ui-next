@@ -4,32 +4,28 @@ export const FETCH_PROJECTS_STARTED = 'FETCH_PROJECTS_STARTED';
 export const FETCH_PROJECTS_SUCCEEDED = 'FETCH_PROJECTS_SUCCEEDED';
 export const FETCH_PROJECTS_FAILED = 'FETCH_PROJECTS_FAILED';
 
-export const actions = {
+export function fetchProjects() {
+  return app => {
+    app.projects.fetchProjectsStarted();
+    app.apiClient.getAvailableProjects()
+      .then(app.projects.fetchProjectsSucceeded)
+      .catch(app.projects.fetchProjectsFailed);
+  };
+}
 
-  fetchProjects() {
-    return reduxApp => {
-      reduxApp.projects.fetchProjectsStarted();
-      reduxApp.futuHoursApi.getAvailableProjects()
-        .then(reduxApp.projects.fetchProjectsSucceeded)
-        .catch(reduxApp.projects.fetchProjectsFailed);
-    };
-  },
+export function fetchProjectsStarted() {
+  return { type: FETCH_PROJECTS_STARTED };
+}
 
-  fetchProjectsStarted() {
-    return { type: FETCH_PROJECTS_STARTED };
-  },
+export function fetchProjectsSucceeded(projectList) {
+  return { type: FETCH_PROJECTS_SUCCEEDED, projectList };
+}
 
-  fetchProjectsSucceeded(projectList) {
-    return { type: FETCH_PROJECTS_SUCCEEDED, projectList };
-  },
+export function fetchProjectsFailed(error) {
+  return { type: FETCH_PROJECTS_FAILED, error };
+}
 
-  fetchProjectsFailed(error) {
-    return { type: FETCH_PROJECTS_FAILED, error };
-  },
-
-};
-
-export function reducer(state = List.of(), action) {
+export default function (state = List.of(), action) {
 
   switch (action.type) {
 
