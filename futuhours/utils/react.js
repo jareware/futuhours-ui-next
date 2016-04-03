@@ -2,6 +2,7 @@ import createCssNs from 'css-ns'; // @see https://github.com/jareware/css-ns
 import React from 'react';
 import { render } from 'react-dom';
 import { is } from 'immutable';
+import { debounce } from 'lodash';
 
 // @example renderFromProps(
 //            __filename,
@@ -42,14 +43,11 @@ export function renderFromStore(fileName, storeSelector, renderFunc) {
     componentWillMount() {
       const reduxApp = this.context.reduxApp;
       const select = storeSelector || (x => x);
-      this.setState({
+      const setState = () => this.setState({
         selectStoreState: select(reduxApp.store.getState()),
       });
-      this._unsubscribe = reduxApp.store.subscribe(() => {
-        this.setState({
-          selectStoreState: select(reduxApp.store.getState()),
-        });
-      });
+      setState(); // set initial state immediately
+      this._unsubscribe = reduxApp.store.subscribe(debounce(setState)); // ...and subscribe to further updates
     },
     shouldComponentUpdate(nextProps, nextState) {
       return !is(nextState.selectStoreState, this.state.selectStoreState);
