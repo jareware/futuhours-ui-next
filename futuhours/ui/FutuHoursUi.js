@@ -6,14 +6,15 @@ const Toolbar = renderFromProps(
   'Toolbar',
 
   {
-    onButtonClick: PropTypes.func.isRequired,
+    buttonClickHandler: PropTypes.func.isRequired,
+    buttonClickArg: PropTypes.any,
   },
 
   (el, props) => (
 
     el('p', null, 'You can do things like: ',
 
-      el('button', { onClick: props.onButtonClick }, 'Fetch projects')
+      el('button', { onClick: props.buttonClickHandler.bind(null, props.buttonClickArg) }, 'Fetch projects')
 
     )
 
@@ -27,13 +28,15 @@ export default renderFromStore(
 
   null, // use the entire state atom
 
-  (el, state, app) => (
+  (el, state, actions) => (
 
     el('div', null,
 
-      el(Toolbar, { onButtonClick: app.projects.fetchProjects }),
+      el(Toolbar, { buttonClickHandler: actions.database.startDatabaseConnection, buttonClickArg: true }),
 
-      el('ul', null, state.projects.map(
+      !!state.database.databaseFailures.size && el('p', null, 'ERROR: DATABASE FAILED'),
+
+      el('ul', null, state.projects.projectMap.toArray().map(
         project => el('li', { key: project.id }, project.name,
           el('ul', null, project.tasks.map(
             task => el('li', { key: task.id }, task.name)
@@ -41,7 +44,7 @@ export default renderFromStore(
         )
       )),
 
-      !!state.operations.isFetching && el('p', null, 'Fetching...')
+      !!state.database.doingInitialFetch && el('p', null, 'Fetching...')
 
     )
 

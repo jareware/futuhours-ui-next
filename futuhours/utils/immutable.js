@@ -1,4 +1,10 @@
 import { Record as defineRecord, fromJS as plainFromJS, List, Iterable } from 'immutable';
+import { mapValues } from 'lodash';
+import modules from 'futuhours/app/';
+
+const StoreRootState = defineRecord(mapValues(modules, () => null));
+const StoreDatabaseState = defineRecord(modules.database.initialState);
+const StoreProjectsState = defineRecord(modules.projects.initialState);
 
 const Project = defineRecord({
   _id: null,
@@ -33,6 +39,9 @@ function createRecordReviver(...forRecordTypes) {
 }
 
 export const fromJS = createRecordReviver(
+  StoreRootState,
+  StoreDatabaseState,
+  StoreProjectsState,
   Project,
   Task
 );

@@ -18,12 +18,13 @@ fastclick(document.body);
 import { createReduxApp } from 'futuhours/utils/redux';
 import modules from 'futuhours/app/';
 import PouchDB from 'pouchdb';
-const reduxApp = createReduxApp(modules, {
+const utils = {
   pouchDB: new PouchDB(process.env.DB_URL),
   devToolsExtension: window.devToolsExtension,
-});
+};
+const app = window.app = createReduxApp(modules, utils);
 
 // Import and render the UI root
 import FutuHoursUi from 'futuhours/ui/FutuHoursUi';
 import { renderReduxApp } from 'futuhours/utils/react';
-renderReduxApp(reduxApp, FutuHoursUi, document.getElementById('futuhours-root'));
+renderReduxApp(app, FutuHoursUi, document.getElementById('futuhours-root'));

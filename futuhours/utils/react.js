@@ -26,7 +26,7 @@ export function renderFromProps(fileName, propTypes, renderFunc) {
 // @example renderFromStore(
 //            __filename,
 //            state => state.get('projects'),
-//            (el, projects, reduxApp) => el('ul', null, projects.map(
+//            (el, projects, actions, utils) => el('ul', null, projects.map(
 //              project => el('li', null, project.name)
 //            ))
 //          );
@@ -56,7 +56,7 @@ export function renderFromStore(fileName, storeSelector, renderFunc) {
       this._unsubscribe();
     },
     render() {
-      return renderFunc.call(null, ns.React.createElement, this.state.selectStoreState, this.context.reduxApp);
+      return renderFunc.call(null, ns.React.createElement, this.state.selectStoreState, this.context.reduxApp.actions, this.context.reduxApp.utils);
     },
   });
 }

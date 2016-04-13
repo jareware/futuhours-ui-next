@@ -1,7 +1,7 @@
-import * as projects from './projects';
-import * as operations from './operations';
+import database from './database';
+import projects from './projects';
 
 export default {
+  database,
   projects,
-  operations,
 };
