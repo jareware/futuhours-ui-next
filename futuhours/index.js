@@ -28,3 +28,6 @@ const app = window.app = createReduxApp(modules, utils);
 import FutuHoursUi from 'futuhours/ui/FutuHoursUi';
 import { renderReduxApp } from 'futuhours/utils/react';
 renderReduxApp(app, FutuHoursUi, document.getElementById('futuhours-root'));
+
+// Kick off the app
+app.actions.database.startDatabaseConnection();
