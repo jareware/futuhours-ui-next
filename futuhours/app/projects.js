@@ -1,4 +1,4 @@
-import { Map } from 'immutable';
+import { Map, List } from 'immutable';
 
 export default {
 
@@ -36,3 +36,8 @@ export default {
   },
 
 };
+
+// Available Tasks for the currently selected Project, or empty List
+export function getAvailableTaskList(localState) {
+  return localState.projectMap.getIn([`projects/${localState.selectedProjectId}`, 'tasks'], List.of());
+}

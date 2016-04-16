@@ -1,6 +1,6 @@
 import { renderFromStore } from 'futuhours/utils/react';
 import { Button, Input } from 'react-bootstrap';
-import { List } from 'immutable';
+import { getAvailableTaskList } from 'futuhours/app/projects';
 
 export default renderFromStore(
 
@@ -40,7 +40,7 @@ export default renderFromStore(
           onChange: event => actions.projects.taskSelected(event.target.value),
         },
         el('option', { value: null }, 'none'),
-        state.projects.projectMap.getIn([`projects/${state.projects.selectedProjectId}`, 'tasks'], List.of()).map(task => (
+        getAvailableTaskList(state.projects).map(task => (
           el(
             'option',
             {
