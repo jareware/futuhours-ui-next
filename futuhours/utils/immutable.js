@@ -5,6 +5,7 @@ import modules from 'futuhours/app/';
 const StoreRootState = defineRecord(mapValues(modules, () => null));
 const StoreDatabaseState = defineRecord(modules.database.initialState);
 const StoreProjectsState = defineRecord(modules.projects.initialState);
+const StoreEntriesState = defineRecord(modules.entries.initialState);
 
 const Project = defineRecord({
   _id: null,
@@ -19,6 +20,15 @@ const Project = defineRecord({
 const Task = defineRecord({
   id: null,
   name: null,
+});
+
+export const Entry = defineRecord({
+  _id: null,
+  _rev: null,
+  startDate: null,
+  endDate: null,
+  entryProjectId: null,
+  entryTaskId: null,
 });
 
 // @see https://facebook.github.io/immutable-js/docs/#/fromJS
@@ -42,6 +52,14 @@ export const fromJS = createRecordReviver(
   StoreRootState,
   StoreDatabaseState,
   StoreProjectsState,
+  StoreEntriesState,
   Project,
-  Task
+  Task,
+  Entry
 );
+
+export const isA = {
+  Project: x => x instanceof Project,
+  Task: x => x instanceof Task,
+  Entry: x => x instanceof Entry,
+};

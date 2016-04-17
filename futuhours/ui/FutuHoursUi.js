@@ -1,6 +1,7 @@
 import { PropTypes } from 'react';
 import { renderFromProps, renderFromStore } from 'futuhours/utils/react';
 import PunchInPanel from 'futuhours/ui/PunchInPanel';
+import EntriesListPanel from 'futuhours/ui/EntriesListPanel';
 
 export default renderFromStore(
 
@@ -12,11 +13,13 @@ export default renderFromStore(
 
     el('div', null,
 
-      el(PunchInPanel),
-
       !!state.databaseFailures.size && el('p', null, 'ERROR: DATABASE FAILED'),
 
-      !!state.doingInitialFetch && el('p', null, 'Fetching...')
+      !!state.doingInitialFetch && el('p', null, 'Fetching...'),
+
+      el(PunchInPanel),
+
+      el(EntriesListPanel)
 
     )
 

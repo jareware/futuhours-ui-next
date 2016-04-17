@@ -1,6 +1,7 @@
 import { renderFromStore } from 'futuhours/utils/react';
 import { Button, Input } from 'react-bootstrap';
-import { getAvailableTaskList } from 'futuhours/app/projects';
+import { getAvailableTaskList, getReadableProjectAndTask } from 'futuhours/app/projects';
+import { getOngoingEntries } from 'futuhours/app/entries';
 
 export default renderFromStore(
 
@@ -12,6 +13,7 @@ export default renderFromStore(
 
     el('div', { className: 'this' },
 
+      /*
       el(
         Input,
         {
@@ -51,12 +53,13 @@ export default renderFromStore(
           )
         ))
       ),
+      */
 
       el(
         Button,
         {
           bsStyle: 'link',
-          onClick: () => { /* TODO */ },
+          onClick: actions.entries.addNewEntry,
         },
         'Punch in'
       )

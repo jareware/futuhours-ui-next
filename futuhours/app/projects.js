@@ -1,4 +1,6 @@
 import { Map, List } from 'immutable';
+import { isA } from 'futuhours/utils/immutable';
+import { matches } from 'lodash';
 
 export default {
 
@@ -28,7 +30,7 @@ export default {
     database: {
 
       documentsReceived(state, docMap) {
-        return state.update('projectMap', map => map.merge(docMap));
+        return state.update('projectMap', map => map.merge(docMap.filter(isA.Project)));
       },
 
     },
@@ -40,4 +42,12 @@ export default {
 // Available Tasks for the currently selected Project, or empty List
 export function getAvailableTaskList(localState) {
   return localState.projectMap.getIn([`projects/${localState.selectedProjectId}`, 'tasks'], List.of());
+}
+
+export function getReadableProjectAndTask(localState, entry) {
+  const project = localState.projectMap.get(`projects/${entry.entryProjectId}`);
+  if (!project) return '(no project set)';
+  const task = project.tasks.find(matches({ id: entry.entryTaskId }));
+  if (!task) return project.name;
+  return `${project.name} (${task.name})`;
 }

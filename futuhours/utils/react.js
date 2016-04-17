@@ -4,6 +4,8 @@ import { render } from 'react-dom';
 import { is } from 'immutable';
 import { debounce } from 'lodash';
 
+const CSS_NS_EXCLUDE = /^table/; // "table" and friends belong to Bootstrap
+
 // @example renderFromProps(
 //            __filename,
 //            { name: React.PropTypes.string.isRequired },
@@ -12,6 +14,7 @@ import { debounce } from 'lodash';
 export function renderFromProps(fileName, propTypes, renderFunc) {
   const ns = createCssNs({
     namespace: fileName,
+    exclude: CSS_NS_EXCLUDE,
     React,
   });
   return React.createClass({
@@ -33,6 +36,7 @@ export function renderFromProps(fileName, propTypes, renderFunc) {
 export function renderFromStore(fileName, storeSelector, renderFunc) {
   const ns = createCssNs({
     namespace: fileName,
+    exclude: CSS_NS_EXCLUDE,
     React,
   });
   return React.createClass({
